@@ -323,3 +323,9 @@ res.render("index.hbs", {
     layout: false
 })
 })
+
+app.post("/logout", urlencoder, (req,res)=>{
+    req.session.destroy()
+    
+    res.redirect("/")
+  })
