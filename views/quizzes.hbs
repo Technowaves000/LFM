@@ -1,0 +1,21 @@
+<h1>My Quizzes</h1>
+<div id="quiz-list">
+  {{#each quizzes}}
+    <div class="result-card card mt-3">
+      <div class="card-header">
+        <div class="clearfix">
+          <div class="float-left">
+            <h4>{{this.title}}</h4>
+            <h6>{{this.likes}} like this</h6>
+          </div>
+          <div class="float-right">
+            <a class="btn btn-link" href="/edit/{{this.id}}">Edit this quiz</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        {{this.content}}
+      </div>
+    </div>
+  {{/each}}
+</div>

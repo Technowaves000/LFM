@@ -1,0 +1,21 @@
+.titlebar {
+    width: 100%;
+    height: 4em;
+    box-sizing: border-box;
+    background-color: blue;
+}
+
+.search-box {
+    
+}
+
+.search-input {
+
+}
+
+.navbar {
+    width: 100%;
+    height: 4em;
+    box-sizing: border-box;
+    background-color: blue;
+}

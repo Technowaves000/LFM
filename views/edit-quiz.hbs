@@ -1,0 +1,95 @@
+<form id="quiz-editor" action="/edit/{{quizId}}" method="POST">
+  <input type="hidden" name="count" id="count" value="{{count}}">
+  <div class="clearfix">
+    <div class="float-left"><h3>Edit quiz set</h3></div>
+    <div class="float-right">
+      <button type="button" class="btn btn-link mt-1" id="quiz-editor-button">Save quiz</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col col-sm-6">
+      <label for="titleField">TITLE</label>
+      <input type="text" class="form-control" id="titleField" value={{quizTitle}} required>
+    </div>
+    <div class="form-group col col-sm-6">
+      <label for="timeField">TIME LIMIT</label>
+      <select class="form-control" id="timeField" value={{time}} required>
+        {{> option var=time value="15" text="00:15"}}
+        {{> option var=time value="30" text="00:30"}}
+        {{> option var=time value="60" text="01:00"}}
+        {{> option var=time value="120" text="02:00"}}
+        {{> option var=time value="180" text="03:00"}}
+        {{> option var=time value="240" text="04:00"}}
+      </select>
+    </div>
+    <div class="form-group col col-sm-6">
+      <label for="genreField">GENRE</label>
+      <select class="form-control" id="genreField" value={{genreCode}} required>
+        <option>Select genre...</option>
+        {{> option var=genreCode value="1" text="Geography"}}
+        {{> option var=genreCode value="2" text="Movies"}}
+        {{> option var=genreCode value="3" text="Sports"}}
+        {{> option var=genreCode value="4" text="Academic"}}
+        {{> option var=genreCode value="5" text="TV"}}
+        {{> option var=genreCode value="6" text="Vocabulary"}}
+        {{> option var=genreCode value="7" text="History"}}
+        {{> option var=genreCode value="8" text="Trivia"}}
+      </select>
+    </div>
+    <div class="form-group col col-sm-6">
+      <label for="typeField">TYPE</label>
+      <select class="form-control" id="typeField" value={{typeCode}} required>
+        <option value="">Select type of quiz...</option>
+        {{> option var=typeCode value="torf" text="True or False"}}
+        {{> option var=typeCode value="fill" text="Fill in the Blank"}}
+      </select>
+    </div>
+  </div>
+
+  <div class="clearfix">
+    <div class="float-left"><h3>Quiz Items</h3></div>
+    <div class="float-right">
+      <button type="button" class="btn btn-sm btn-link" id="create-quiz-item">Create new item</button>
+    </div>
+  </div>
+
+  <div id="quiz-items">
+    <div class="row">
+      <div class="col offset-3 col-4 text-center">Question</div>
+      <div class="col col-4 text-center">Answer</div>
+    </div>
+    {{#each items}}
+      <div class="row question mb-3">
+        <div class="question-number col col-1 my-auto text-center">{{this.id}}</div>
+        <div class="col col-2 mx-auto my-auto custom-file">
+          <input type="file" class="question-file custom-file-input stretched-link" name="{{this.id}}" id="{{this.id}}">
+          <label class="custom-file-label question-file-for" for="{{this.id}}">Select media...</label>
+        </div>
+        <div class="col col-4">
+          <textarea class="question-text w-100" rows="5" name="question{{this.id}}">{{this.text}}</textarea>
+        </div>
+        <div class="col col-4 answer">
+          {{#if this.fill}}
+            <textarea class="question-answer w-100" rows="5" name="answer{{this.id}}">{{this.answer}}</textarea>
+          {{else}}
+            <!-- todo check the appropriate radio button -->
+            <div class="form-check form-check-inline">
+              {{> radio class="question-answer form-check-input" name=(concat "answer" this.id) id=(concat (concat "answer" this.id) "True") value=true var=this.answer }}
+              <label class="form-check-label" for="answer{{this.id}}True">True</label>
+            </div>
+            <div class="form-check form-check-inline">
+              {{> radio class="question-answer form-check-input" name=(concat "answer" this.id) id=(concat (concat "answer" this.id) "False") value=false var=this.answer }}
+              <label class="form-check-label" for="answer{{this.id}}False">False</label>
+            </div>
+          {{/if}}
+        </div>
+        <div class="col col-1 my-auto">
+          <button class="btn btn-link text-red delete-quiz-item"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</form>
+
+{{> quiz-edit-script}}

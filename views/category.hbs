@@ -1,0 +1,16 @@
+<h1>Quizzes in {{category}}</h1>
+<div id="search-results">
+  <div id="resultsContainer">
+    {{#each results}}
+      <div class="result-card card mt-3">
+        <div class="card-header">
+          <h4>{{this.title}}</h4>
+          <h6>{{this.author}}</h6>
+        </div>
+        <div class="card-body">
+          {{this.content}}
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>

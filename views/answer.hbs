@@ -1,0 +1,66 @@
+<div class="clearfix" id="quiz-timer">
+  <div class="float-left">
+    <h2>{{quizTitle}}</h2>
+  </div>
+  <div class="float-right">
+    <h4 class="text-right mb-0">TIMER</h4>
+    <p class="text-right text-custom-blue mt-0 pt-0" id="timer"><span id="minutes">0</span>:<span id="seconds">00</span></p>
+  </div>
+</div>
+
+<form action="/answer/{{quizId}}" method="POST" id="quiz-items">
+  {{#each items}}
+    {{> quiz-item item=this}}
+  {{/each}}
+</form>
+
+<script>
+  var time = {{time}};
+  var handle = null;
+
+  function updateTime() {
+    var seconds = time % 60;
+    var minutes = Math.floor(time / 60);
+
+    var secondsText = seconds.toString();
+
+    $('#minutes').text(minutes);
+    $('#seconds').text(secondsText.padStart(2, '0'));
+  }
+
+  $(document).ready(function(e) {
+    updateTime();
+
+    $('#quiz-items').on('click', '.next-button', function(e) {
+      var current = $('.answer-quiz-item.active');
+      var next = current.next();
+
+      if (next.length > 0) {
+        current.removeClass('active');
+        next.addClass('active');
+      }
+    });
+
+    $('#quiz-items').on('click', '.prev-button', function(e) {
+      var current = $('.answer-quiz-item.active');
+      var prev = current.prev();
+
+      if (prev.length > 0) {
+        current.removeClass('active');
+        prev.addClass('active');
+      }
+    });
+
+    handle = setInterval(function() {
+      time--;
+      updateTime();
+
+      if (time == 0) {
+        clearInterval(handle);
+        $('#quiz-items').submit();
+      }
+    }, 1000);
+
+    $('.answer-quiz-item').first().addClass('active');
+  });
+</script>

@@ -1,0 +1,16 @@
+<h2>Results for {{quizTitle}}</h2>
+
+<div class="card text-center">
+  <div class="card-body">
+    <h5>You got</h5>
+    <h3>{{score}}/{{total}}</h3>
+    <h5>in</h5>
+    <h3>05:00</h3>
+  </div>
+</div>
+<div class="mx-auto mt-3 w-100">
+  {{#if canRetake}}
+    <a class="prev-button btn btn-secondary" href="/answer/{{quizId}}">Retake</a>
+  {{/if}}
+  <a class="prev-button btn btn-secondary" href="/">Return</a>
+</div>

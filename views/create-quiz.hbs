@@ -1,0 +1,65 @@
+<form id="quiz-editor" action="/create" method="POST">
+  <input type="hidden" name="count" id="count" value="0">
+  <div class="clearfix">
+    <div class="float-left"><h3>Create a quiz set</h3></div>
+    <div class="float-right">
+      <button type="button" class="btn btn-link mt-1" id="quiz-editor-button">Create quiz</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="form-group col col-sm-6">
+      <label for="titleField">TITLE</label>
+      <input type="text" class="form-control" id="titleField" required>
+    </div>
+    <div class="form-group col col-sm-6">
+      <label for="timeField">TIME LIMIT</label>
+      <select class="form-control" id="timeField" required>
+        <option value="15">00:15</option>
+        <option value="30">00:30</option>
+        <option value="60">01:00</option>
+        <option value="120">02:00</option>
+        <option value="180">03:00</option>
+        <option value="240">04:00</option>
+      </select>
+    </div>
+    <div class="form-group col col-sm-6">
+      <label for="genreField">GENRE</label>
+      <select class="form-control" id="genreField" required>
+        <option>Select genre...</option>
+        <option value="1">Geography</option>
+        <option value="2">Movies</option>
+        <option value="3">Sports</option>
+        <option value="4">Academic</option>
+        <option value="5">TV</option>
+        <option value="6">Vocabulary</option>
+        <option value="7">History</option>
+        <option value="8">Trivia</option>
+      </select>
+    </div>
+    <div class="form-group col col-sm-6">
+      <label for="typeField">TYPE</label>
+      <select class="form-control" id="typeField" required>
+        <option value="">Select type of quiz...</option>
+        <option value="torf">True or False</option>
+        <option value="fill">Fill in the Blank</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="clearfix">
+    <div class="float-left"><h3>Quiz Items</h3></div>
+    <div class="float-right">
+      <button type="button" class="btn btn-sm btn-link" id="create-quiz-item">Create new item</button>
+    </div>
+  </div>
+
+  <div id="quiz-items">
+    <div class="row">
+      <div class="col offset-3 col-4 text-center">Question</div>
+      <div class="col col-4 text-center">Answer</div>
+    </div>
+  </div>
+</form>
+
+{{> quiz-edit-script}}

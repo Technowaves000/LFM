@@ -1,0 +1,13 @@
+<h3>{{user.username}}</h3>
+<hr>
+<form action="/editprofile" method="POST">
+  <div class="form-group">
+    <label for="usernameField">Username</label>
+    <input type="text" name="username" class="form-control" id="usernameField" placeholder="New username">
+  </div>
+  <div class="form-group">
+    <label for="passwordField">Password</label>
+    <input type="password" name="password" class="form-control" id="passwordField" placeholder="New password">
+  </div>
+  <button type="submit" class="btn bg-custom-blue text-custom-white shadow-sm">Save</button>
+</form>

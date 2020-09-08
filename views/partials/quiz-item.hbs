@@ -1,0 +1,36 @@
+<div class="answer-quiz-item">
+  <div class="row">
+    <div class="col col-1 my-auto text-center">{{item.index}}</div>
+    <div class="col col-11">
+      <div class="card">
+        <div class="card-body">
+          {{item.text}}
+          <br><br><br>
+          {{#if item.fill}}
+            <input type="text" class="form-control" name="answer{{id}}" placeholder="Type your answer here...">
+          {{else}}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="answer{{id}}" id="answer{{id}}False" value="true">
+              <label class="form-check-label" for="answer{{id}}False">True</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="answer{{id}}" id="answer{{id}}True" value="false">
+              <label class="form-check-label" for="answer{{id}}True">False</label>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mx-auto mt-3 w-100">
+    {{#unless item.first}}
+      <button class="prev-button btn btn-secondary" type="button">Previous</button>
+    {{/unless}}
+
+    {{#if item.last}}
+      <button class="next-button btn text-custom-white bg-custom-blue" type="submit">Submit</button>
+    {{else}}
+      <button class="next-button btn text-custom-white bg-custom-blue" type="button">Next</button>
+    {{/if}}
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div>
+  <form action="/login" method="POST">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-user"></i></span>
+      </div>
+      <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+      </div>
+      <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password">
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" name="remember" id="rememberCheckbox">
+      <label class="form-check-label" for="rememberCheckbox">
+        Remember me
+      </label>
+    </div>
+    <button type="submit" class="btn bg-custom-blue text-custom-white shadow-sm">Log In</button>
+    <p class="text-gray">Don't have an account? <a href="/register">REGISTER HERE</a></p>
+  </form>
+</div>

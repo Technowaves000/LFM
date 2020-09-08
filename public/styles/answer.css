@@ -1,0 +1,16 @@
+.question {
+  display: flex;
+}
+
+.question-number {
+  width: 24px;
+  height: 100%;
+  display: flex;
+  flex: 0 1 auto;
+}
+
+.question-content {
+  width: 24px;
+  display: block;
+  flex: 1 0 auto;
+}
