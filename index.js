@@ -3,7 +3,7 @@ const bodyparser = require("body-parser")
 const express = require('express');
 const Handlebars = require('handlebars');
 const hbs = require('express-handlebars');
-
+const mongoose = require('mongoose');
 const app = express();
 const PORT = 3000;
 const HOSTNAME = 'localhost';
@@ -11,6 +11,36 @@ const HOSTNAME = 'localhost';
 const urlencoder = bodyparser.urlencoded({
     extended: false
   })
+
+  mongoose.connect('mongodb://localhost:27017/queazy', {
+    useNewUrlParser: true,
+  })
+  
+  
+  //Create quiz Form
+  app.post("/create", (req, res) => {
+      console.log(req.body);
+      var title = req.body.title;
+      var genre = req.body.genre;
+      var time = req.body.time;
+      var quiz = new Quiz({
+          Title: title,
+          Genre: genre,
+          Time: time
+      
+      })
+  
+  
+       quiz.save().then((doc)=>{
+       console.log("Successfully added: "+ doc);
+       //alert("Quiz Created");
+   }, (err)=>{
+       console.log("Error in adding: " + err);
+       //alert("Error in creating Quiz");
+  
+   })
+  
+  }) 
 
 Handlebars.registerHelper('ifEquals', function(comparand, options) {
     console.log(comparand);
@@ -329,3 +359,4 @@ app.post("/logout", urlencoder, (req,res)=>{
     
     res.redirect("/")
   })
+

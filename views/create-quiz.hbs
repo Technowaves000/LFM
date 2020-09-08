@@ -1,20 +1,20 @@
-<form id="quiz-editor" action="/create" method="POST">
+<form id="quiz-editor" action="http://localhost:3000/create" method="POST">
   <input type="hidden" name="count" id="count" value="0">
   <div class="clearfix">
     <div class="float-left"><h3>Create a quiz set</h3></div>
     <div class="float-right">
-      <button type="button" class="btn btn-link mt-1" id="quiz-editor-button">Create quiz</button>
+      <button type="submit" class="btn btn-link mt-1" id="quiz-editor-button">Create quiz</button>
     </div>
   </div>
 
   <div class="row">
     <div class="form-group col col-sm-6">
       <label for="titleField">TITLE</label>
-      <input type="text" class="form-control" id="titleField" required>
+      <input type="text" class="form-control" name = "title" id="titleField" required>
     </div>
     <div class="form-group col col-sm-6">
       <label for="timeField">TIME LIMIT</label>
-      <select class="form-control" id="timeField" required>
+      <select class="form-control" name = "time" id="timeField" required>
         <option value="15">00:15</option>
         <option value="30">00:30</option>
         <option value="60">01:00</option>
@@ -25,7 +25,7 @@
     </div>
     <div class="form-group col col-sm-6">
       <label for="genreField">GENRE</label>
-      <select class="form-control" id="genreField" required>
+      <select class="form-control" name = "genre" id="genreField" required>
         <option>Select genre...</option>
         <option value="1">Geography</option>
         <option value="2">Movies</option>
