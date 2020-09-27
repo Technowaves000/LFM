@@ -1,16 +1,35 @@
-.question {
-  display: flex;
+.answer-quiz-item .question-text {
+  box-sizing: border-box;
+
+  width: 100%;
+  padding: 1.5em 1em;
+  margin-bottom: 1em;
+
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+
+  font-size: 1.25em;
+  text-align: center;
+  color: #2A73C7;
 }
 
-.question-number {
-  width: 24px;
-  height: 100%;
-  display: flex;
-  flex: 0 1 auto;
+.question-media {
+  margin-bottom: 1em;
 }
 
-.question-content {
-  width: 24px;
-  display: block;
-  flex: 1 0 auto;
+.question-media img {
+  width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+.question-media audio {
+  width: 100%;
+}
+
+.question-media video {
+  width: 100%;
+  border: 1px solid lightgray;
+  border-radius: 5px;
 }

@@ -1,18 +1,28 @@
-<div>
-  <form action="/register" method="POST">
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-user"></i></span>
+<div style="height: calc(100vh - 8em);" class="position-relative">
+  <div class="position-absolute w-100" style="left:50%;top:50%;transform:translate(-50%,-50%);max-width:480px;">
+    {{#if error}}
+      <div class="alert alert-danger" role="alert">
+        {{error}}
       </div>
-      <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text"><i class="fa fa-lock"></i></span>
+    {{/if}}
+    <form action="/register" method="POST">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-user"></i></span>
+        </div>
+        <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username">
       </div>
-      <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password">
-    </div>
-    <button type="submit" class="btn bg-custom-blue text-custom-white shadow-sm">Register</button>
-    <p class="text-gray">Already have an account? <a href="/login">LOGIN</a></p>
-  </form>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="fa fa-lock"></i></span>
+        </div>
+        <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password">
+      </div>
+      <input type="hidden" name="returnUrl" value="{{returnUrl}}">
+      <div class="mx-auto text-center">
+        <button type="submit" class="btn bg-custom-blue text-custom-white shadow-sm mb-3">Register</button>
+        <p class="text-gray">Already have an account? <a href="/login">LOGIN</a></p>
+      </div>
+    </form>
+  </div>
 </div>

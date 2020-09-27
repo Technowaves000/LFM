@@ -1,13 +1,103 @@
-<h3>{{user.username}}</h3>
-<hr>
-<form action="/editprofile" method="POST">
-  <div class="form-group">
-    <label for="usernameField">Username</label>
-    <input type="text" name="username" class="form-control" id="usernameField" placeholder="New username">
-  </div>
-  <div class="form-group">
-    <label for="passwordField">Password</label>
-    <input type="password" name="password" class="form-control" id="passwordField" placeholder="New password">
-  </div>
-  <button type="submit" class="btn bg-custom-blue text-custom-white shadow-sm">Save</button>
-</form>
+<div class="card w-75 mx-auto mt-3 mb-5">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item bg-custom-blue text-light"><span style="font-size: 2em;">Edit your profile</span></li>
+    <li class="list-group-item">
+      <form class="clearfix" action="/editprofile" method="POST">
+        <input type="hidden" name="type" value="username">
+        <div class="float-left form-inline" style="font-size: 1.5em;">
+          <span class="mr-4">Username</span>
+          <span id="text-label" class="name-view text-custom-blue">{{user.name}}</span>
+          <span id="text-field" class="name-actions" style="display:none;">
+            <input type="text" class="w-100 form-control" name="username" value="{{user.name}}">
+          </span>
+        </div>
+        <div class="float-right" style="font-size: 1.5em;">
+          <div class="name-view">
+            <button type="button" id="edit-username-button" class="btn btn-secondary">Edit</button>
+          </div>
+          <div style="display:none;line-height:1em;" class="name-actions">
+            <button type="button" id="close-username-button" class="btn btn-secondary">Close</button>
+          </div>
+        </div>
+      </form>
+      <div class="mx-auto text-center">
+        <div style="display:none;" class="name-actions">
+          <button type="submit" id="save-username-button" class="btn bg-custom-blue text-custom-white">Save</button>
+        </div>
+        {{#ifEquals where value="username"}}
+          {{#unless error}}
+            <div class="alert alert-success" role="alert">{{message}}</div>
+          {{else}}
+            <div class="alert alert-danger" role="alert">{{message}}</div>
+          {{/unless}}
+        {{/ifEquals}}
+      </div>
+    </li>
+    <li class="list-group-item">
+      <form class="clearfix" action="/editprofile" method="POST">
+        <input type="hidden" name="type" value="password">
+        <div class="float-left" style="font-size: 1.5em;">
+          <span class="mr-4">Password</span>
+        </div>
+        <div class="float-right" style="font-size: 1.5em;">
+          <div class="pass-view">
+            <button type="button" id="edit-password-button" class="btn btn-secondary">Edit</button>
+          </div>
+          <div style="display:none;line-height:1em;" class="pass-actions">
+            <button type="button" id="close-password-button" class="btn btn-secondary">Close</button>
+          </div>
+        </div>
+        <div class="pass-actions mx-auto text-center pt-5" style="display: none;">
+          <div class="form-group">
+            <input type="password" class="form-control" name="oldPass" placeholder="Old password">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="newPass" placeholder="New password">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="confirm" placeholder="Confirm password">
+          </div>
+          <div style="display:none;line-height:1em;" class="pass-actions">
+            <button type="submit" id="save-password-button" class="btn bg-custom-blue text-custom-white">Save</button>
+          </div>
+        </div>
+      </form>
+      <div class="mx-auto text-center">
+        {{#ifEquals where value="password"}}
+          {{#unless error}}
+            <div class="alert alert-success" role="alert">{{message}}</div>
+          {{else}}
+            <div class="alert alert-danger" role="alert">{{message}}</div>
+          {{/unless}}
+        {{/ifEquals}}
+      </div>
+    </li>
+  </ul>
+</div>
+
+<script>
+  var showEditUser = false;
+  var showEditPass = false;
+
+  $(document).ready(function() {
+    $('#edit-username-button').click(e => {
+      $('.name-view').hide();
+      $('.name-actions').show();
+    });
+
+    $('#close-username-button').click(e => {
+      $('.name-actions').hide();
+      $('.name-view').show();
+    });
+
+    $('#edit-password-button').click(e => {
+      $('.pass-view').hide();
+      $('.pass-actions').show();
+    });
+
+    $('#close-password-button').click(e => {
+      $('.pass-actions').hide();
+      $('.pass-view').show();
+    });
+  });
+</script>

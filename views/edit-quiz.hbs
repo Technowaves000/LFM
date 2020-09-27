@@ -1,16 +1,11 @@
 <form id="quiz-editor" action="/edit/{{quizId}}" method="POST">
   <input type="hidden" name="count" id="count" value="{{count}}">
-  <div class="clearfix">
-    <div class="float-left"><h3>Edit quiz set</h3></div>
-    <div class="float-right">
-      <button type="button" class="btn btn-link mt-1" id="quiz-editor-button">Save quiz</button>
-    </div>
-  </div>
+  <h3>Edit quiz set</h3>
 
   <div class="row">
     <div class="form-group col col-sm-6">
       <label for="titleField">TITLE</label>
-      <input type="text" class="form-control" id="titleField" value={{quizTitle}} required>
+      <input type="text" class="form-control" id="titleField" value="{{quizTitle}}" required>
     </div>
     <div class="form-group col col-sm-6">
       <label for="timeField">TIME LIMIT</label>
@@ -26,15 +21,10 @@
     <div class="form-group col col-sm-6">
       <label for="genreField">GENRE</label>
       <select class="form-control" id="genreField" value={{genreCode}} required>
-        <option>Select genre...</option>
-        {{> option var=genreCode value="1" text="Geography"}}
-        {{> option var=genreCode value="2" text="Movies"}}
-        {{> option var=genreCode value="3" text="Sports"}}
-        {{> option var=genreCode value="4" text="Academic"}}
-        {{> option var=genreCode value="5" text="TV"}}
-        {{> option var=genreCode value="6" text="Vocabulary"}}
-        {{> option var=genreCode value="7" text="History"}}
-        {{> option var=genreCode value="8" text="Trivia"}}
+        <option value="">Select genre...</option>
+        {{#each genres}}
+          {{> option var=../genreCode value=this.id text=this.name}}
+        {{/each}}
       </select>
     </div>
     <div class="form-group col col-sm-6">
@@ -47,49 +37,177 @@
     </div>
   </div>
 
-  <div class="clearfix">
-    <div class="float-left"><h3>Quiz Items</h3></div>
-    <div class="float-right">
-      <button type="button" class="btn btn-sm btn-link" id="create-quiz-item">Create new item</button>
-    </div>
-  </div>
+  <h3>Quiz Items</h3>
 
-  <div id="quiz-items">
-    <div class="row">
-      <div class="col offset-3 col-4 text-center">Question</div>
-      <div class="col col-4 text-center">Answer</div>
-    </div>
-    {{#each items}}
-      <div class="row question mb-3">
-        <div class="question-number col col-1 my-auto text-center">{{this.id}}</div>
-        <div class="col col-2 mx-auto my-auto custom-file">
-          <input type="file" class="question-file custom-file-input stretched-link" name="{{this.id}}" id="{{this.id}}">
-          <label class="custom-file-label question-file-for" for="{{this.id}}">Select media...</label>
-        </div>
-        <div class="col col-4">
-          <textarea class="question-text w-100" rows="5" name="question{{this.id}}">{{this.text}}</textarea>
-        </div>
-        <div class="col col-4 answer">
-          {{#if this.fill}}
-            <textarea class="question-answer w-100" rows="5" name="answer{{this.id}}">{{this.answer}}</textarea>
-          {{else}}
-            <!-- todo check the appropriate radio button -->
-            <div class="form-check form-check-inline">
-              {{> radio class="question-answer form-check-input" name=(concat "answer" this.id) id=(concat (concat "answer" this.id) "True") value=true var=this.answer }}
-              <label class="form-check-label" for="answer{{this.id}}True">True</label>
+  <table class="table table-borderless">
+    <tbody id="quiz-items">
+      {{#each items}}
+        <tr class="question">
+          <td class="align-middle">
+            <div>&nbsp;</div>
+            <div class="question-number text-center align-middle">{{inc @index}}</div>
+          </td>
+          <td>
+            <div class="text-center mb-1">Question</div>
+            <textarea class="question-text form-control w-100 shadow-sm" rows="3" style="resize: none;">{{this.question}}</textarea>
+          </td>
+          <td>
+            <div class="text-center mb-1">Answer</div>
+            <div class="answer">
+              {{#ifEquals this.type value="torf"}}
+                {{> switch value=this.answer id=(inc @index)}}
+              {{else}}
+                <textarea class="question-answer form-control w-100 shadow-sm" rows="3" id="answer{{inc @index}}">{{this.answer}}</textarea>
+              {{/ifEquals}}
             </div>
-            <div class="form-check form-check-inline">
-              {{> radio class="question-answer form-check-input" name=(concat "answer" this.id) id=(concat (concat "answer" this.id) "False") value=false var=this.answer }}
-              <label class="form-check-label" for="answer{{this.id}}False">False</label>
-            </div>
-          {{/if}}
-        </div>
-        <div class="col col-1 my-auto">
-          <button class="btn btn-link text-red delete-quiz-item"><i class="fa fa-times"></i></button>
-        </div>
-      </div>
-    {{/each}}
+          </td>
+          <td class="align-middle">
+            <input type="file" id="file{{inc @index}}" class="question-file form-control inputfile" />
+            <label class="question-file-for" for="file{{inc @index}}">Add media</label>
+          </td>
+          <td class="align-middle">
+            <button class=" btn btn-link text-red delete-quiz-item"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <div class="text-center mx-auto">
+    <button type="button" class="btn btn-primary" id="create-quiz-item">Add Card</button>
+    <button type="button" class="btn btn-primary" id="quiz-editor-button">Save</button>
   </div>
 </form>
 
 {{> quiz-edit-script}}
+
+<script>
+  $(document).ready(function() {
+    $('#quiz-editor').submit(function(e) {
+      e.preventDefault();
+    
+      var formData = new FormData();
+      formData.append('title', $('#titleField').val());
+      formData.append('timeLimit', $('#timeField').val());
+      formData.append('genre', $('#genreField').val());
+      formData.append('type', $('#typeField').val());
+      var questions = [];
+
+      if ($('#titleField').val().length < 3) {
+        alert('Title should have at least three characters.');
+        $('#titleField').focus();
+        return true;
+      }
+
+      if (!$('#timeField').val()) {
+        alert('Please select a time limit.');
+        $('#timeField').focus();
+        return true;
+      }
+
+      if (!$('#genreField').val()) {
+        alert('Please select a genre.');
+        $('#genreField').focus();
+        return true;
+      }
+
+      if (!$('#typeField').val()) {
+        alert('Please select a quiz type.');
+        $('#typeField').focus();
+        return true;
+      }
+
+      if ($('#quiz-items .question').length < 1) {
+        alert('Please add at least one question.');
+        $('#create-quiz-item').focus();
+        return true;
+      }
+
+      var fileCount = 0;
+      var selectField = null;
+      try {
+        $('#quiz-items .question').each((index, element) => {
+          var question = $(element);
+          var questionField = question.find('.question-text').first();
+          var answerField = question.find('.question-answer').first();
+
+          if (questionField.val()) {
+            questionField.removeClass('border-red');
+          } else {
+            questionField.addClass('border-red');
+          }
+
+          if (answerField.val()) {
+            answerField.removeClass('border-red');
+          } else {
+            answerField.addClass('border-red');
+          }
+        });
+
+        $('#quiz-items .question').each((index, element) => {
+          var question = $(element);
+          var fileElem = question.find('.question-file')[0];
+          var fileIndex = -1;
+
+          if (fileElem.files && fileElem.files[0]) {
+            formData.append('files', fileElem.files[0]);
+            fileIndex = fileCount++;
+          }
+
+          var questionField = question.find('.question-text').first();
+          var answerField = question.find('.question-answer').first();
+
+          if (!questionField.val()) {
+            selectField = questionField;
+            throw new Error('Please type a question.');
+          }
+
+          if (!answerField.val()) {
+            selectField = answerField;
+            throw new Error('Please type or select an answer.');
+          }
+
+          var answer = answerField.val();
+          if (getQuizType() === 'torf') {
+            answer = answerField[0].checked;
+          }
+
+          questions.push({
+            question: questionField.val(),
+            answer: answer,
+            file: fileIndex
+          });
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+
+          if (selectField) {
+            selectField.focus();
+          }
+        }
+      }
+
+      formData.append('questions', JSON.stringify(questions));
+
+      $.ajax({
+        cache: false,
+        contentType: false,
+        data: formData,
+        method: 'POST',
+        processData: false,
+        url: `/edit/{{quizId}}`,
+        success: function(data, status, res) {
+          if (res.status === 200) {
+            window.location.href = `/quiz/${data.id}`;
+          } else {
+            
+          }
+        },
+        error: function(data, status, res) {
+            
+        }
+      });
+    });
+  });
+</script>

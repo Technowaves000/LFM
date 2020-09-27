@@ -1,18 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light navbar-lg shadow {{style}}">
   <div class="container">
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link text-white text-lg" href="/">Home</a>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link text-white text-lg dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Genre
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {{#each genres}}
+              <a class="dropdown-item" href="/genre/{{this.id}}">{{this.name}}</a>
+            {{/each}}
+          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white text-lg" href="/categories">Categories</a>
+          <a class="nav-link text-white text-lg" href="/hot">Hot Quizzes</a>
         </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link text-white text-lg" href="/leaderboard">Leaderboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white text-lg" href="/create">Create</a>
+          <a class="nav-link text-white text-lg bg-custom-dark-blue" id="create-btn" href="/create">Create a quiz</a>
         </li>
       </ul>
     </div>

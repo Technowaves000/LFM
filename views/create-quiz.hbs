@@ -1,20 +1,14 @@
-<form id="quiz-editor" action="http://localhost:3000/create" method="POST">
-  <input type="hidden" name="count" id="count" value="0">
-  <div class="clearfix">
-    <div class="float-left"><h3>Create a quiz set</h3></div>
-    <div class="float-right">
-      <button type="submit" class="btn btn-link mt-1" id="quiz-editor-button">Create quiz</button>
-    </div>
-  </div>
+<form id="quiz-editor" action="/create" method="POST">
+  <h3>Create a quiz set</h3>
 
   <div class="row">
     <div class="form-group col col-sm-6">
       <label for="titleField">TITLE</label>
-      <input type="text" class="form-control" name = "title" id="titleField" required>
+      <input type="text" class="form-control" id="titleField" required>
     </div>
     <div class="form-group col col-sm-6">
       <label for="timeField">TIME LIMIT</label>
-      <select class="form-control" name = "time" id="timeField" required>
+      <select class="form-control" id="timeField" required>
         <option value="15">00:15</option>
         <option value="30">00:30</option>
         <option value="60">01:00</option>
@@ -25,16 +19,11 @@
     </div>
     <div class="form-group col col-sm-6">
       <label for="genreField">GENRE</label>
-      <select class="form-control" name = "genre" id="genreField" required>
-        <option>Select genre...</option>
-        <option value="1">Geography</option>
-        <option value="2">Movies</option>
-        <option value="3">Sports</option>
-        <option value="4">Academic</option>
-        <option value="5">TV</option>
-        <option value="6">Vocabulary</option>
-        <option value="7">History</option>
-        <option value="8">Trivia</option>
+      <select class="form-control" id="genreField" required>
+        <option value="">Select genre...</option>
+        {{#each genres}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
       </select>
     </div>
     <div class="form-group col col-sm-6">
@@ -47,19 +36,148 @@
     </div>
   </div>
 
-  <div class="clearfix">
-    <div class="float-left"><h3>Quiz Items</h3></div>
-    <div class="float-right">
-      <button type="button" class="btn btn-sm btn-link" id="create-quiz-item">Create new item</button>
-    </div>
-  </div>
+  <h3>Quiz Items</h3>
 
-  <div id="quiz-items">
-    <div class="row">
-      <div class="col offset-3 col-4 text-center">Question</div>
-      <div class="col col-4 text-center">Answer</div>
-    </div>
+  <table class="table table-borderless">
+    <tbody id="quiz-items">
+    </tbody>
+  </table>
+
+  <div class="text-center mx-auto">
+    <button type="button" class="btn btn-primary" id="create-quiz-item">Add Card</button>
+    <button type="button" class="btn btn-primary" id="quiz-editor-button">Save</button>
   </div>
 </form>
 
 {{> quiz-edit-script}}
+
+<script>
+  $(document).ready(function() {
+    $('#quiz-editor').submit(function(e) {
+      e.preventDefault();
+    
+      var formData = new FormData();
+      formData.append('title', $('#titleField').val());
+      formData.append('timeLimit', $('#timeField').val());
+      formData.append('genre', $('#genreField').val());
+      formData.append('type', $('#typeField').val());
+      var questions = [];
+
+      if ($('#titleField').val().length < 3) {
+        alert('Title should have at least three characters.');
+        $('#titleField').focus();
+        return true;
+      }
+
+      if (!$('#timeField').val()) {
+        alert('Please select a time limit.');
+        $('#timeField').focus();
+        return true;
+      }
+
+      if (!$('#genreField').val()) {
+        alert('Please select a genre.');
+        $('#genreField').focus();
+        return true;
+      }
+
+      if (!$('#typeField').val()) {
+        alert('Please select a quiz type.');
+        $('#typeField').focus();
+        return true;
+      }
+
+      if ($('#quiz-items .question').length < 1) {
+        alert('Please add at least one question.');
+        $('#create-quiz-item').focus();
+        return true;
+      }
+
+      var fileCount = 0;
+      var selectField = null;
+      try {
+        $('#quiz-items .question').each((index, element) => {
+          var question = $(element);
+          var questionField = question.find('.question-text').first();
+          var answerField = question.find('.question-answer').first();
+
+          if (questionField.val()) {
+            questionField.removeClass('border-red');
+          } else {
+            questionField.addClass('border-red');
+          }
+
+          if (answerField.val()) {
+            answerField.removeClass('border-red');
+          } else {
+            answerField.addClass('border-red');
+          }
+        });
+        
+        $('#quiz-items .question').each((index, element) => {
+          var question = $(element);
+          var fileElem = question.find('.question-file')[0];
+          var fileIndex = -1;
+
+          if (fileElem.files && fileElem.files[0]) {
+            formData.append('files', fileElem.files[0]);
+            fileIndex = fileCount++;
+          }
+
+          var questionField = question.find('.question-text').first();
+          var answerField = question.find('.question-answer').first();
+
+          if (!questionField.val()) {
+            selectField = questionField;
+            throw new Error('Please type a question.');
+          }
+
+          if (!answerField.val()) {
+            selectField = answerField;
+            throw new Error('Please type or select an answer.');
+          }
+
+          var answer = answerField.val();
+          if (getQuizType() === 'torf') {
+            answer = answerField[0].checked;
+          }
+
+          questions.push({
+            question: questionField.val(),
+            answer: answer,
+            file: fileIndex
+          });
+        });
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+
+          if (selectField) {
+            selectField.focus();
+          }
+        }
+      }
+
+      formData.append('questions', JSON.stringify(questions));
+
+      $.ajax({
+        cache: false,
+        contentType: false,
+        data: formData,
+        method: 'POST',
+        processData: false,
+        url: `/create`,
+        success: function(data, status, res) {
+          if (res.status === 200) {
+            window.location.href = `/quiz/${data.id}`;
+          } else {
+            
+          }
+        },
+        error: function(data, status, res) {
+            
+        }
+      });
+    });
+  });
+</script>

@@ -1,0 +1,56 @@
+<h1>{{quiz.title}}</h1>
+<h5>by: <a class="text-custom-blue" href="/profile/{{author.id}}">{{author.name}}</a></h5>
+
+<h4 class="text-uppercase"><a class="text-custom-blue" href="/genre/{{quiz.genreID}}">{{quiz.genre.name}} Quiz</a>: {{quiz.type}}</h4>
+
+<div>{{countQuestions quiz.items}}</div>
+<div>{{createTime quiz.timeLimit}} Duration</div>
+<div>{{countPlays plays}}</div>
+
+<div class="text-center mt-5 mb-3">
+  <a class="btn btn-lg bg-custom-blue text-custom-white" href="/answer/{{quiz.id}}">Play Quiz</a>
+</div>
+<div class="text-center">
+  <button class="btn btn-sm bg-custom-dark-blue text-custom-white" onclick="history.back(); return false;">Exit</button>
+</div>
+
+<div class="clearfix">
+  <div class="float-right">
+    {{#if user}}
+      {{#ifEquals user.id value=author.id}}
+        {{#unless played}}
+          <a class="btn btn-sm btn-secondary" href="/edit/{{quiz.id}}">Edit</a>
+        {{/unless}}
+      {{/ifEquals}}
+    {{/if}}
+    <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#leaderboard-modal">Leaderboard</button>
+  </div>
+</div>
+
+<div class="modal fade" id="leaderboard-modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border: 0;">
+      <div class="modal-header bg-custom-blue text-custom-white">
+        <h5 class="modal-title">Leaderboard</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-custom-white">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table id="leaderboard-table">
+          <tbody>
+            {{#each leaderboard}}
+              <tr data-position="{{inc @index}}" class="shadow-sm text-custom-dark-blue">
+                <td class="shadow-sm text-center">{{inc @index}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.score}}/{{../quiz.items.length}}</td>
+                <td>{{createTime this.time}}</td>
+                <td>{{this.plays}} retake(s)</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

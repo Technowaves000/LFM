@@ -5,12 +5,12 @@
     <h5>You got</h5>
     <h3>{{score}}/{{total}}</h3>
     <h5>in</h5>
-    <h3>05:00</h3>
+    <h3>{{createTime elapsed}}</h3>
   </div>
 </div>
-<div class="mx-auto mt-3 w-100">
+<div class="text-center mt-3 w-100">
   {{#if canRetake}}
     <a class="prev-button btn btn-secondary" href="/answer/{{quizId}}">Retake</a>
   {{/if}}
-  <a class="prev-button btn btn-secondary" href="/">Return</a>
+  <a class="prev-button btn btn-secondary" href="/quiz/{{quizId}}">Return</a>
 </div>

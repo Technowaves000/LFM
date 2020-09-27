@@ -1,0 +1,27 @@
+<h2 class="text-uppercase">Hot Quizzes: All</h2>
+<hr>
+<table id="quizzes-table">
+  <thead>
+    <th>Title</th>
+    <th>Genre</th>
+    <th>Plays</th>
+    <th>Length</th>
+  </thead>
+  <tbody>
+    {{#each quizzes}}
+      <tr class="shadow-sm">
+        <td scope="row"><a class="text-dark stretched-link" href="/quiz/{{this.id}}">{{this.title}}</a></td>
+        <td>{{this.genre.name}}</td>
+        <td>{{this.plays}}</td>
+        <td>{{createTime this.timeLimit}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<div class="clearfix">
+  <div class="float-right">
+    <a class="btn bg-custom-blue {{#if firstPage}}disabled{{/if}} shadow-sm mr-2" href="/hot/{{prevPage}}">Previous</a>
+    <a class="btn bg-custom-blue {{#if lastPage}}disabled{{/if}} shadow-sm" href="/hot/{{nextPage}}">Next</a>
+  </div>
+</div>

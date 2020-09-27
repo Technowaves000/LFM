@@ -1,25 +1,24 @@
 <div class="clearfix">
-  <div class="float-left"><h3>{{user.username}}</h3></div>
-  <div class="float-right"><a class="btn btn-sm text-custom-white bg-custom-blue" href="/editprofile">Edit profile</a></div>
+  <div class="float-left"><h1>{{profile.name}}</h1></div>
+  {{#ifEquals user.id value=profile.id}}
+    <div class="float-right"><a class="btn text-custom-white bg-custom-blue" href="/editprofile">Edit profile</a></div>
+  {{/ifEquals}}
 </div>
 <hr>
 
 <div class="row">
-  <div class="col col-sm-3">
-    <h4>Created Quizzes</h4>
-    <h5 class="text-custom-dark-blue">3</h5>
+  <div class="col col-sm-4">
+    <h4><span class="text-custom-dark-blue">3</span> Created Quizzes</h4>
   </div>
-  <div class="col col-sm-3">
-    <h4>Answered Quizzes</h4>
-    <h5 class="text-custom-dark-blue">5</h5>
+  <div class="col col-sm-4">
+    <h4><span class="text-custom-dark-blue">5</span> Answered Quizzes</h4>
   </div>
-  <div class="col col-sm-3">
-    <h4>Liked Quizzes</h4>
-    <h5 class="text-custom-dark-blue">4</h5>
+  <div class="col col-sm-4">
+    <h4><span class="text-custom-dark-blue">4</span> Liked Quizzes</h4>
   </div>
 </div>
 
-<h4 class="mt-3">Quiz History</h4>
+<h3 class="mt-3">Quiz History</h3>
 <div id="quiz-history" class="row row-cols-1 row-cols-md-3 row-cols-lg-4">
   <div class="col mb-4">
     <div class="card">

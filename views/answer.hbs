@@ -1,6 +1,6 @@
 <div class="clearfix" id="quiz-timer">
   <div class="float-left">
-    <h2>{{quizTitle}}</h2>
+    <h2>{{quiz.title}}</h2>
   </div>
   <div class="float-right">
     <h4 class="text-right mb-0">TIMER</h4>
@@ -8,15 +8,18 @@
   </div>
 </div>
 
-<form action="/answer/{{quizId}}" method="POST" id="quiz-items">
-  {{#each items}}
-    {{> quiz-item item=this}}
+<form action="/answer/{{quiz.id}}" method="POST" id="quiz-items">
+  {{#each quiz.questions}}
+    {{> quiz-item item=this index=(inc @index) length=../quiz.questions.length type=../quiz.type}}
   {{/each}}
 </form>
 
 <script>
-  var time = {{time}};
+  var time = {{quiz.timeLimit}};
+  var elapsed = 0;
   var handle = null;
+
+  var submitting = false;
 
   function updateTime() {
     var seconds = time % 60;
@@ -26,6 +29,45 @@
 
     $('#minutes').text(minutes);
     $('#seconds').text(secondsText.padStart(2, '0'));
+  }
+
+  function updateActive() {
+    var current = $('.answer-quiz-item.active');
+    var loaded = current.data('loaded');
+    var index = Number.parseInt(current.data('index'));
+    
+    if (loaded !== 'true') {
+      $.ajax({
+        cache: false,
+        method: 'GET',
+        url: `/checkmedia/{{quiz.id}}/${index}`,
+        success: function(data, status, res) {
+          if (res.status === 200) {
+            if (data.present) {
+              var type = data.type.toLowerCase();
+              
+              var src = `/media/{{quiz.id}}/${index}`;
+              var html = '';
+              if (type === '.png' || type === '.jpg' || type === '.jpeg') {
+                html = `<img src="${src}">`;
+              } else if (type === '.mp3' || type === '.ogg') {
+                html = `<audio controls src="${src}">Sorry, your browser does not support HTML5 audio.</audio>`;
+              } else if (type === '.mp4' || type === '.avi') {
+                html = `<video controls><source src="${src}">Sorry, your browser does not support HTML5 video.</video>`;
+              }
+
+              $(`.answer-quiz-item[data-index="${index}"] .question-media`).append(html);
+            } else {
+              $(`.answer-quiz-item[data-index="${index}"] .question-media`).remove();
+            }
+            current.data('loaded', 'true');
+          }
+        },
+        error: function(data, status, res) {
+
+        }
+      });
+    }
   }
 
   $(document).ready(function(e) {
@@ -38,6 +80,7 @@
       if (next.length > 0) {
         current.removeClass('active');
         next.addClass('active');
+        updateActive();
       }
     });
 
@@ -48,11 +91,69 @@
       if (prev.length > 0) {
         current.removeClass('active');
         prev.addClass('active');
+        updateActive();
       }
     });
 
+    $('input.question-answer').keypress(e => {
+      if (e.keyCode === 10 || e.keyCode === 13) {
+        e.preventDefault();
+
+        var current = $('.answer-quiz-item.active');
+        var next = current.next();
+
+        if (next.length > 0) {
+          current.removeClass('active');
+          next.addClass('active');
+          updateActive();
+        }
+      }
+    });
+
+    $('#quiz-items').submit(e => {
+      e.preventDefault();
+      if (submitting) return true;
+      submitting = true;
+
+      var items = [];
+      $('.answer-quiz-item').each((index, elem) => {
+        var item = $(elem);
+        var index = item.data('index');
+        {{#ifEquals quiz.type value="fill"}}
+        var answer = item.find('.question-answer').first().val();
+        {{else}}
+        var answer = item.find('.question-answer:checked').val();
+        answer = answer === 'true';
+        {{/ifEquals}}
+
+        items.push({ index, answer });
+      });
+
+      $.ajax({
+        cache: false,
+        contentType: 'application/json',
+        data: JSON.stringify({
+          elapsed,
+          items
+        }),
+        method: 'POST',
+        processData: false,
+        url: `/answer/{{quiz.id}}`,
+        success: function(data, status, res) {
+          if (res.status === 200) {
+            window.location.href = `/result/${data.id}`;
+          }
+          submitting = false;
+        },
+        error: function(data, status, res) {
+          submitting = false;
+        }
+      })
+    });
+    
     handle = setInterval(function() {
       time--;
+      elapsed++;
       updateTime();
 
       if (time == 0) {
@@ -60,7 +161,8 @@
         $('#quiz-items').submit();
       }
     }, 1000);
-
+    
     $('.answer-quiz-item').first().addClass('active');
+    updateActive();
   });
 </script>

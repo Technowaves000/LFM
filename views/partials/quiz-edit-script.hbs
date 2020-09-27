@@ -5,19 +5,16 @@
 
   function trueOrFalseHtml(id) {
     var html =
-      '<div class="form-check form-check-inline">' +
-      `<input class="question-answer form-check-input" type="radio" name="answer${id}" id="answer${id}True" value="true">` +
-      `<label class="form-check-label" for="answer${id}True">True</label>` +
-      '</div>' +
-      '<div class="form-check form-check-inline">' +
-      `<input class="question-answer form-check-input" type="radio" name="answer${id}" id="answer${id}False" value="false">` +
-      `<label class="form-check-label" for="answer${id}False">False</label>` +
-      '</div>';
+      `<div class="text-center mt-4 h-100 custom-control custom-switch">` +
+      `<input type="checkbox" class="question-answer custom-control-input" id="answer${id}">` +
+      `<label class="custom-control-label question-answer-for" for="answer${id}">False</label>` +
+      `</div>`;
+
     return html;
   }
 
   function fillInTheBlankHtml(id) {
-    var html = `<textarea class="question-answer w-100" rows="5" name="answer${id}"></textarea>`;
+    var html = `<textarea class="question-answer form-control w-100 shadow-sm" rows="3" id="answer${id}"></textarea>`;
     return html;
   }
 
@@ -31,22 +28,28 @@
   function itemHtml(id, type) {
     var answer = answerHtml(id, type);
     var html =
-      `<div class="row question mb-3">` +
-      `<div class="question-number col col-1 my-auto text-center">${id}</div>` +
-      `<div class="col col-2 mx-auto my-auto custom-file">` +
-      `<input type="file" class="question-file custom-file-input stretched-link" name="file${id}" id="file${id}">` +
-      `<label class="custom-file-label question-file-for" for="file${id}">Select media...</label>` +
-      `</div>` +
-      `<div class="col col-4">` +
-      `<textarea class="question-text w-100" rows="5" name="question${id}"></textarea>` +
-      `</div>` +
-      `<div class="col col-4 answer">` +
+      `<tr class="question">` +
+      `<td class="align-middle">` +
+      `<div>&nbsp;</div>` +
+      `<div class="question-number text-center align-middle">${id}</div>` +
+      `</td>` +
+      `<td>` +
+      `<div class="text-center mb-1">Question</div>` +
+      `<textarea class="question-text form-control w-100 shadow-sm" rows="3" style="resize: none;"></textarea>` +
+      `</td>` +
+      `<td>` +
+      `<div class="text-center mb-1">Answer</div><div class="answer">` +
       answer +
-      `</div>` +
-      `<div class="col col-1 my-auto">` +
-      `<button class="btn btn-link text-red delete-quiz-item"><i class="fa fa-times"></i></button>` +
-      `</div>` +
-      `</div>`;
+      `</div></td>` +
+      `<td class="align-middle">` +
+      `<input type="file" id="file${id}" class="question-file form-control inputfile" />` +
+      `<label class="question-file-for" for="file${id}">Add media</label>` +
+      `</td>` +
+      `<td class="align-middle">` +
+      `<button class=" btn btn-link text-red delete-quiz-item"><i class="fa fa-times"></i></button>` +
+      `</td>` +
+      `</tr>`;
+
     return html;
   }
 
@@ -59,15 +62,14 @@
     var itemNo = root.find('.question-number');
     var itemFile = root.find('.question-file');
     var itemFileFor = root.find('.question-file-for');
-    var itemText = root.find('.question-text');
     var itemAnswer = root.find('.question-answer');
+    var itemAnswerFor = root.find('.question-answer-for');
 
     itemNo.text(newId);
-    itemFile.attr('name', 'file' + newId);
     itemFile.attr('id', 'file' + newId);
     itemFileFor.attr('for', 'file' + newId);
-    itemText.attr('name', 'question' + newId);
-    itemAnswer.attr('name', 'answer' + newId);
+    itemAnswer.attr('id', 'answer' + newId);
+    itemAnswerFor.attr('for', 'answer' + newId);
   }
 
   function reassignType(itemElement, type) {
@@ -92,6 +94,13 @@
       });
     });
 
+    $('#quiz-items').on('change', 'input.question-answer[type="checkbox"]', function(e) {
+      var elem = e.currentTarget;
+      var selector = `label[for="${elem.id}"]`; 
+      var label = $(selector);
+      label.text(elem.checked ? 'True' : 'False');
+    });
+
     $('#typeField').change(function(e) {
       $('#quiz-items .question').each(function(index, element) {
         reassignType(element, getQuizType());
@@ -112,7 +121,7 @@
       $('#count').val(itemCount());
     });
 
-    $('#quiz-editor-button').submit(function(e) {
+    $('#quiz-editor-button').click(function(e) {
       $('#quiz-editor').submit();
     });
   });

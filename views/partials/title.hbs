@@ -15,22 +15,14 @@
         </form>
       {{/unless}}
       <ul class="navbar-nav ml-auto">
-        {{#if isLoginScreen}}
-          <li class="nav-item">
-            <a class="nav-link text-custom-white" href="/login">Log In</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn bg-custom-primary text-custom-white" href="/register">Register</a>
-          </li>
-        {{else}}
+        {{#unless isLoginScreen}}
           {{#if user}}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{user.username}}
+                {{user.name}}
               </a>
               <form action="/logout" method="POST">
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/quizzes">Your Quizzes</a>
                   <a class="dropdown-item" href="/profile">Profile</a>
                   <a class="dropdown-item" href="/settings">Settings</a>
                   <button class="dropdown-item" type="submit">Log Out</button>
@@ -48,7 +40,7 @@
               </div>
             </li>
           {{/if}}
-        {{/if}}
+        {{/unless}}
       </ul>
     </div>
   </div>

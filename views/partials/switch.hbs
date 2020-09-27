@@ -1,0 +1,8 @@
+<div class="text-center mt-4 h-100 custom-control custom-switch">
+  {{#if value}}
+  <input type="checkbox" class="question-answer custom-control-input" id="answer{{id}}" checked>
+  {{else}}
+  <input type="checkbox" class="question-answer custom-control-input" id="answer{{id}}">
+  {{/if}}
+  <label class="custom-control-label question-answer-for" for="answer{{id}}">{{boolValue value}}</label>
+</div>
