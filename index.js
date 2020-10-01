@@ -1,5 +1,5 @@
 const path = require('path');
-const bodyparser = require("body-parser")
+const bodyparser = require("body-parser");
 const express = require('express');
 const Handlebars = require('handlebars');
 const hbs = require('express-handlebars');
@@ -17,9 +17,24 @@ app.use(session({
     saveUninitialized: false
 }));
 
+app.engine('hbs', hbs({
+    extname: 'hbs',
+    defaultLayout: 'main',
+    layoutsDir: path.join(__dirname, '/views/layouts'),
+    partialsDir: path.join(__dirname, '/views/partials')
+}));
+app.set('view engine', 'hbs');
+
+app.use(express.static('public'));
+
+// app.get('/create', (req, res) => {
+//     return res.render('create-quiz', {
+//         title: 'Create quiz'
+//     });
+
 mongoose.connect('mongodb://localhost:27017/queazy', {
     useNewUrlParser: true,
-  })
+  });
   
   
   //Create quiz Form
@@ -129,5 +144,5 @@ app.use(quizRoutes);
 app.use(siteRoutes);
 
 app.listen(PORT, HOSTNAME, () => {
-    console.log(`Listening: connect to http://${HOSTNAME}:${PORT}`);
+    console.log(`its working`);
 });
