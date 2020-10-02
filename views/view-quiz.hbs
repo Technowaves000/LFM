@@ -19,11 +19,11 @@
     {{#if user}}
       {{#ifEquals user.id value=author.id}}
         {{#unless played}}
-          <a class="btn btn-sm btn-secondary" href="/edit/{{quiz.id}}">Edit</a>
+          <a class="btn text-dark bg-custom-white circle-button border-custom-blue" href="/edit/{{quiz.id}}"><i class="fa fa-pencil-alt"></i></a>
         {{/unless}}
       {{/ifEquals}}
     {{/if}}
-    <button class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#leaderboard-modal">Leaderboard</button>
+    <button class="btn text-dark bg-custom-white circle-button border-custom-blue" data-toggle="modal" data-target="#leaderboard-modal"><i class="fa fa-trophy"></i></button>
   </div>
 </div>
 
