@@ -8,7 +8,7 @@ const router = Router();
 const db = require('../db.js')
 const checkLoggedIn = require('../middleware/check-logged-in');
 
-const Quiz = require('../models/Quiz.model.js');
+const Quiz = require('../models/quizModel.js');
  
 
 const multer = require('multer');

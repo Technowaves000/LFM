@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3000;
 const HOSTNAME = 'localhost';
 
-
+require('dotenv').config();
 
 const session = require('express-session');
 

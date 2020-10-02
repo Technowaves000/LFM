@@ -2,7 +2,8 @@
 
 const express = require('express');
 const Router = express.Router;
-
+const userModel = require("../models/userModel")
+const quizModel = require("../models/quizModel")
 const router = Router();
 
 const data = require('../data');
