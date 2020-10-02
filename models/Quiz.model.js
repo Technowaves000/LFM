@@ -1,15 +1,13 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var Quiz = mongoose.model("quiz", {
-
+var quizSchema = new Schema({
+    Author: Number,
     Title: String,
-    Questions: [String],
-    Answers: [String],
+    Questions: [], //json
     Genre: Number,
     Type: String,
     Time: Number
 })
 
-module.exports = {
-    Quiz
-}
+module.exports = mongoose.model('Quiz', quizSchema);

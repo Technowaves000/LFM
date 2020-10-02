@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 let quizID = 8;
 let profileID = 3;
 let resultID = 1;
@@ -149,7 +151,9 @@ const data = {
     createQuiz: (data) => {
         data.id = quizID++;
         quizzes.push(data);
+        data.save();
         return Promise.resolve(data);
+
     },
 
     getQuiz: (id) => {

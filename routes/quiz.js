@@ -3,10 +3,13 @@
 const path = require('path');
 const express = require('express');
 const Router = express.Router;
-
+const mongoose = require('mongoose');
 const router = Router();
-
+const db = require('../db.js')
 const checkLoggedIn = require('../middleware/check-logged-in');
+
+const Quiz = require('../models/Quiz.model.js');
+ 
 
 const multer = require('multer');
 
@@ -36,6 +39,7 @@ const upload = multer({
 });
 
 const data = require('../data');
+const { Console } = require('console');
 
 router.get('/create', checkLoggedIn, (req, res) => {
     return res.render('create-quiz', {
@@ -50,6 +54,7 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
     // the questions are encoded in JSON and sent in a question field in the
     // multipart/form-data request.
 
+        console.log(req);
     var authorID = req.session.user.id;
     
     var genre = Number.parseInt(req.body.genre);
@@ -73,23 +78,27 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
     //   answer - if fill in the blanks, anything. if true or false, must be parsed into boolean
     //   file - index into file array: -1 means no file associated with question.
 
-    var quiz = {
-        title,
-        genre,
-        type,
-        timeLimit,
-        questions,
-        authorID
-    };
+    var quiz = new Quiz({
+       Title: title,
+       Genre: genre,
+       Type: type,
+       Time: timeLimit,
+       Questions: questions, //json
+       Author: authorID
+    });
 
-    data.createQuiz(quiz)
-        .then(quiz => {
+    console.log("This are the values =" + questions);
+
+    quiz.save()
+        .then((doc) => {
+            console.log("added to database");
             return res.status(200).json({
                 message: 'Quiz successfully created',
                 id: quiz.id
             });
         })
         .catch(reason => {
+            console.log("failed to add to database");
             return res.status(500).json({
                 message: 'Failed to create quiz',
                 reason
