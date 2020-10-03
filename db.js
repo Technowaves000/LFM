@@ -11,7 +11,6 @@ const HOSTNAME = 'localhost';
 const session = require('express-session');
 
 
-mongoose.connect('mongodb://localhost:27017/queazy', {
+mongoose.connect('mongodb+srv://admin:LFM123@quezy.odeny.mongodb.net/quezy?retryWrites=true&w=majority', {
     useNewUrlParser: true,
   });
-  

@@ -182,59 +182,70 @@ router.post('/edit/:quizId', checkLoggedIn, upload.array('files'), (req, res) =>
 });
 
 router.get('/quiz/:id', (req, res) => {
-    var id = Number.parseInt(req.params.id);
-
-    data.getQuiz(id)
-        .then(quiz => Promise.all([ quiz, data.getGenre(quiz.genre), data.getProfile(quiz.authorID) ]))
-        .then(([ quiz, genre, author ]) => {
-            // TODO: get leaderboard, sorted according to the algorithm provided
-
-            var leaderboard = [
-                { name: 'user_12', score: 19, time: 54, plays: 1 }, // plays === retakes
-                { name: 'user_82', score: 20, time: 21, plays: 3 },
-                { name: 'user_26', score: 17, time: 23, plays: 2 },
-                { name: 'user_85', score: 13, time: 47, plays: 2 },
-                { name: 'user_24', score: 16, time: 124, plays: 1 },
-                { name: 'user_64', score: 12, time: 53, plays: 1 },
-                { name: 'user_23', score: 17, time: 52, plays: 2 },
-            ];
-
-            leaderboard = leaderboard.sort((a, b) => {
-                if (a.plays > b.plays) return 1;
-                else if (a.plays < b.plays) return -1;
-                else {
-                    if (a.score > b.score) return -1;
-                    else if (a.score < b.score) return 1;
-                    else {
-                        if (a.time > b.time) return 1;
-                        else if (a.time < b.time) return -1;
-                        else return 0;
-                    }
-                }
-            }).filter((_, index) => index < 5);
-
+    
+    var id = req.params.id;
+    var quizz = Quiz.findOne({ 
+        _id: id 
+    })
+    .exec(function(err, quiz){
+        if(err){
+            console.log("error in getting book");
+        } else{
             return res.render('view-quiz', {
-                title: quiz.title,
-                genres: req.genres,
+                title: quiz.Title,
+                //genres: req.genres,
                 quiz: {
-                    id: quiz.id,
-                    genre,
-                    title: quiz.title,
-                    type: quiz.type == 'torf' ? 'True / False' : 'Fill in the Blanks',
-                    genreID: genre.id,
-                    timeLimit: quiz.timeLimit,
-                    items: quiz.questions,
+                    id: quiz._id,
+                    genre: quiz.Genre,
+                    title: quiz.Title,
+                    type: quiz.Type == 'torf' ? 'True / False' : 'Fill in the Blanks',
+                    genreID: quiz.Genre,
+                    timeLimit: quiz.Time,
+                    items: quiz.Questions,
                 },
-                leaderboard,
-                author,
+                leaderboard: quiz.Leaderboard,
+                author: quiz.Author,
                 plays: 0,
                 played: false,
                 user: req.session ? req.session.user : null
             });
-        })
-        .catch(reason => {
-            return res.redirect('/404');
-        });
+        }
+    });
+
+    console.log(quizz);
+    //console.log("This is the title" +quiz.Title);
+    // data.getQuiz(id)
+    //     .then(quiz => Promise.all([ quiz, data.getGenre(quiz.genre), data.getProfile(quiz.authorID) ]))
+    //     .then(([ quiz, genre, author ]) => {
+    //         // TODO: get leaderboard, sorted according to the algorithm provided
+
+    //         var leaderboard = [
+    //             { name: 'user_12', score: 19, time: 54, plays: 1 }, // plays === retakes
+    //             { name: 'user_82', score: 20, time: 21, plays: 3 },
+    //             { name: 'user_26', score: 17, time: 23, plays: 2 },
+    //             { name: 'user_85', score: 13, time: 47, plays: 2 },
+    //             { name: 'user_24', score: 16, time: 124, plays: 1 },
+    //             { name: 'user_64', score: 12, time: 53, plays: 1 },
+    //             { name: 'user_23', score: 17, time: 52, plays: 2 },
+    //         ];
+
+    //         leaderboard = leaderboard.sort((a, b) => {
+    //             if (a.plays > b.plays) return 1;
+    //             else if (a.plays < b.plays) return -1;
+    //             else {
+    //                 if (a.score > b.score) return -1;
+    //                 else if (a.score < b.score) return 1;
+    //                 else {
+    //                     if (a.time > b.time) return 1;
+    //                     else if (a.time < b.time) return -1;
+    //                     else return 0;
+    //                 }
+    //             }
+    //         }).filter((_, index) => index < 5);
+
+           
+
+
 });
 
 router.get('/hot/:page', (req, res) => {

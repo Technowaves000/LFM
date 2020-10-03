@@ -7,7 +7,9 @@ var quizSchema = new Schema({
     Questions: [], //json
     Genre: Number,
     Type: String,
-    Time: Number
+    Time: Number,
+    Plays: Number,
+    Leaderboard: []
 })
 
 module.exports = mongoose.model('Quiz', quizSchema);
