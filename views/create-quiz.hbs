@@ -62,6 +62,7 @@
       formData.append('genre', $('#genreField').val());
       formData.append('type', $('#typeField').val());
       var questions = [];
+      var answers = [];
 
       if ($('#titleField').val().length < 3) {
         alert('Title should have at least three characters.');
@@ -142,11 +143,14 @@
             answer = answerField[0].checked;
           }
 
-          questions.push({
-            question: questionField.val(),
-            answer: answer,
-            file: fileIndex
-          });
+          questions.push(
+           questionField.val()
+            //file: fileIndex
+          );
+          answers.push(
+           answer
+          );
+
         });
       } catch (error) {
         if (error instanceof Error) {
@@ -159,7 +163,7 @@
       }
 
       formData.append('questions', JSON.stringify(questions));
-
+      formData.append('answers', JSON.stringify(answers));
       $.ajax({
         cache: false,
         contentType: false,
