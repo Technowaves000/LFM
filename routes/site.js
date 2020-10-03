@@ -60,8 +60,12 @@ router.get('/npm', (req, res) => {
 });
 
 router.get('/', (req, res) => {
+    // Keep the top eight genres
+    var mainGenres = [...req.genres];
+    mainGenres.splice(8);
     return res.render('index', {
         title: 'Queazy',
+        mainGenres,
         genres: req.genres,
         user: req.session ? req.session.user : null
     });
