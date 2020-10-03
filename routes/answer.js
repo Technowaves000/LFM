@@ -3,9 +3,9 @@
 const path = require('path');
 const express = require('express');
 const Router = express.Router;
-
+const db = require('../db.js')
 const router = Router();
-
+const Quiz = require('../models/Quiz.model.js');
 const checkLoggedIn = require('../middleware/check-logged-in');
 
 const data = require('../data');
@@ -50,18 +50,38 @@ router.get('/media/:quizId/:index', checkLoggedIn, (req, res) => {
 });
 
 router.get('/answer/:quizId', checkLoggedIn, (req, res) => {
-    data.getQuiz(Number.parseInt(req.params.quizId))
-        .then(quiz => {
+    // data.getQuiz(Number.parseInt(req.params.quizId))
+    //     .then(quiz => {
+    //         return res.render('answer', {
+    //             title: 'Answer quiz',
+    //             genres: req.genres,
+    //             quiz,
+    //             user: req.session.user
+    //         });
+    //     })
+    //     .catch(reason => {
+    //         return res.sendStatus(404);
+    //     });
+    var id = req.params.quizId;
+    Quiz.findOne({ 
+        _id: id 
+    })
+    .exec(function(err, quiz){
+        if(err){
+            console.log("error in getting quiz");
+        } else{
+            console.log(id);
             return res.render('answer', {
-                title: 'Answer quiz',
-                genres: req.genres,
-                quiz,
-                user: req.session.user
+                title: quiz.Title,
+                genres: quiz.Genre,
+                user: req.session.user,
+                quiz: quiz,
+                leaderboard: quiz.Leaderboard,
+                played: false,
+                user: req.session ? req.session.user : null
             });
-        })
-        .catch(reason => {
-            return res.sendStatus(404);
-        });
+        }
+    });
 });
 
 router.post('/answer/:quizId', checkLoggedIn, (req, res) => {

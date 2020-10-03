@@ -137,7 +137,8 @@ let genres = [
     { id: 5, name: 'TV', image: '/images/tv.jpg' },
     { id: 6, name: 'Vocabulary', image: '/images/vocabulary.jpg' },
     { id: 7, name: 'History', image: '/images/history.jpg' },
-    { id: 8, name: 'Trivias', image: '/images/trivias.jpg' }
+    { id: 8, name: 'Trivias', image: '/images/trivias.jpg' },
+    { id: 9, name: 'Music', image: '/images/music.jpg' }
 ];
 
 let profiles = [

@@ -21,6 +21,10 @@ body {
     background-color: #2A73C7 !important;
 }
 
+.border-custom-blue {
+    border: 1px solid #2A73C7 !important;
+}
+
 .bg-custom-dark-blue {
     background-color: #225EA2 !important;
 }
@@ -105,6 +109,17 @@ body {
 
 .genre-container .card-img-overlay {
     height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.genre-container .card {
+    transition: ease-out 400ms;
+}
+
+.genre-container .card:hover {
+    transform: scale(1.1);
 }
 
 .inputfile {
@@ -139,6 +154,11 @@ footer h1, footer h2, footer h3, footer h4, footer h5, footer h6 {
 
 footer p, footer a {
     color: #dedede;
+}
+
+footer a:hover {
+    color: #6f6f6f;
+    text-decoration: none;
 }
 
 #genres {
@@ -284,4 +304,26 @@ footer p, footer a {
 
 #create-btn {
     border-radius: 3px;
+}
+
+.circle-button {
+    padding: 6px 0;
+    height: 48px;
+    width: 48px;
+    vertical-align: bottom;
+    border-radius: 50% !important;
+    align-items: center;
+    justify-content: center;
+}
+
+a.circle-button i {
+    line-height: 30px;
+}
+
+
+.circle-button i {
+    display: block;
+    text-align: center;
+    margin-top: auto;
+    margin-top: auto;
 }

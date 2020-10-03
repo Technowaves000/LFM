@@ -1,7 +1,7 @@
 <div class="genre-container">
-  {{#each genres}}
+  {{#each mainGenres}}
     <div class="card bg-dark text-white text-center bg-darken">
-      <img class="card-img" src="{{this.image}}" alt="Geography">
+      <img class="card-img" src="{{this.image}}" alt="{{this.name}}">
       <div class="card-img-overlay">
         <h5 class="card-title"><a href="/genre/{{this.id}}" class="card-link stretched-link">{{this.name}}</a></h5>
       </div>
