@@ -74,7 +74,7 @@ router.get('/answer/:quizId', checkLoggedIn, (req, res) => {
                 title: quiz.Title,
                 genres: quiz.Genre,
                 user: req.session.user,
-                quiz: quiz,
+                quiz: quiz.questions,
                 leaderboard: quiz.Leaderboard,
                 played: false,
 
