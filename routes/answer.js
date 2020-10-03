@@ -3,7 +3,6 @@
 const path = require('path');
 const express = require('express');
 const Router = express.Router;
-const db = require('../db.js')
 const router = Router();
 const Quiz = require('../models/quizModel.js');
 const checkLoggedIn = require('../middleware/check-logged-in');
@@ -78,7 +77,7 @@ router.get('/answer/:quizId', checkLoggedIn, (req, res) => {
                 quiz: quiz,
                 leaderboard: quiz.Leaderboard,
                 played: false,
-                user: req.session ? req.session.user : null
+
             });
         }
     });

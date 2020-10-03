@@ -5,7 +5,6 @@ const express = require('express');
 const Router = express.Router;
 const mongoose = require('mongoose');
 const router = Router();
-const db = require('../db.js')
 const checkLoggedIn = require('../middleware/check-logged-in');
 
 const Quiz = require('../models/quizModel.js');
@@ -64,6 +63,7 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
     var title = req.body.title;
     var type = req.body.type;
     console.log("questions are: " + JSON.stringify(questions))
+
     // questions.map(value => {
     //     if (value.file !== -1) {
     //         value.file = req.files[value.file].filename;

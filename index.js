@@ -4,7 +4,6 @@ const express = require('express');
 const Handlebars = require('handlebars');
 const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
-const db = require('./db.js')
 const cookieParser = require('cookie-parser');
 
 const app = express();
