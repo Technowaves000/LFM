@@ -129,6 +129,6 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@quez
     useUnifiedTopology: true
   });
 
-app.listen(PORT, HOSTNAME, () => {
+app.listen(PORT, () => {
     console.log(`its working`);
 });
