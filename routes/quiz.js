@@ -59,10 +59,11 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
     
     var genre = Number.parseInt(req.body.genre);
     var questions = JSON.parse(req.body.questions);     //questions: {question, answer, file}[]; So, we have an array of that object.
+    var answers = JSON.parse(req.body.answers);
     var timeLimit = Number.parseInt(req.body.timeLimit);// we need to get each question, answer separately. Unless you guys get it na, I don't think file is doable
     var title = req.body.title;
     var type = req.body.type;
-    console.log("questions are: " + questions)
+    console.log("questions are: " + JSON.stringify(questions))
     // questions.map(value => {
     //     if (value.file !== -1) {
     //         value.file = req.files[value.file].filename;
@@ -83,8 +84,8 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
        Genre: genre,
        Type: type,
        Time: timeLimit,
-      // Questions: questions.question, //json
-      // Answers: questions.answer,
+       Questions: questions, //json
+       Answers: answers,
        Author: authorID
     });
 
