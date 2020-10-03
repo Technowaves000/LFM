@@ -58,20 +58,20 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
     var authorID = req.session.user.id;
     
     var genre = Number.parseInt(req.body.genre);
-    var questions = JSON.parse(req.body.questions);
-    var timeLimit = Number.parseInt(req.body.timeLimit);
+    var questions = JSON.parse(req.body.questions);     //questions: {question, answer, file}[]; So, we have an array of that object.
+    var timeLimit = Number.parseInt(req.body.timeLimit);// we need to get each question, answer separately. Unless you guys get it na, I don't think file is doable
     var title = req.body.title;
     var type = req.body.type;
+    console.log("questions are: " + questions)
+    // questions.map(value => {
+    //     if (value.file !== -1) {
+    //         value.file = req.files[value.file].filename;
+    //     } else {
+    //         value.file = null;
+    //     }
 
-    questions.map(value => {
-        if (value.file !== -1) {
-            value.file = req.files[value.file].filename;
-        } else {
-            value.file = null;
-        }
-
-        return value;
-    });
+    //     return value;
+    // });
 
     // Each entry has three properties:
     //   question - the text itself
@@ -83,11 +83,12 @@ router.post('/create', checkLoggedIn, upload.array('files'), (req, res) => {
        Genre: genre,
        Type: type,
        Time: timeLimit,
-       Questions: questions, //json
+      // Questions: questions.question, //json
+      // Answers: questions.answer,
        Author: authorID
     });
 
-    console.log("This are the values =" + questions);
+    //console.log("This are the values =" + JSON.stringify(questions[0].question));
 
     quiz.save()
         .then((doc) => {
@@ -205,7 +206,7 @@ router.get('/quiz/:id', (req, res) => {
                 },
                 leaderboard: quiz.Leaderboard,
                 author: quiz.Author,
-                plays: 0,
+                plays: quiz.Taken,
                 played: false,
                 user: req.session ? req.session.user : null
             });
