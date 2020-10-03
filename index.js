@@ -5,7 +5,7 @@ const Handlebars = require('handlebars');
 const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const db = require('./db.js')
-
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +14,18 @@ const HOSTNAME = 'localhost';
 require('dotenv').config();
 
 const session = require('express-session');
+
+app.use(cookieParser())
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000*60*60*1000,
+        httpOnly: false
+    }
+}))
 
 app.use(session({
     resave: false,
@@ -30,38 +42,6 @@ app.engine('hbs', hbs({
 app.set('view engine', 'hbs');
 
 app.use(express.static('public'));
-
-// app.get('/create', (req, res) => {
-//     return res.render('create-quiz', {
-//         title: 'Create quiz'
-//     });
-
-  
-  
-//   //Create quiz Form
-//   app.post("/create", (req, res) => {
-//       console.log(req.body);
-//       var title = req.body.title;
-//       var genre = req.body.genre;
-//       var time = req.body.time;
-//       var quiz = new Quiz({
-//           Title: title,
-//           Genre: genre,
-//           Time: time
-      
-//       })
-  
-  
-//        quiz.save().then((doc)=>{
-//        console.log("Successfully added: "+ doc);
-//        //alert("Quiz Created");
-//    }, (err)=>{
-//        console.log("Error in adding: " + err);
-//        //alert("Error in creating Quiz");
-  
-//    })
-  
-//   })
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

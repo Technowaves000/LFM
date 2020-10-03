@@ -45,6 +45,7 @@ router.post('/register', (req, res) => {
             },function(err){
                 if(!err)res.redirect("/")
             })
+            
         })
     }
 
