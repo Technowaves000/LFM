@@ -110,8 +110,9 @@ router.post ('/login', async (req, res) => {
 			if (user) {
 				bcrypt.compare(password, user.Password, function(err, result) {
 					if (result) {
-						req.session.logUser = user;
+						req.session.user = user;
                         // res.send({status: 200});
+                        
                         return res.redirect(returnUrl);
 					} else res.send({status: 401, msg: 'Incorrect password.'});
 				});

@@ -5,7 +5,7 @@ const express = require('express');
 const Router = express.Router;
 const db = require('../db.js')
 const router = Router();
-const Quiz = require('../models/Quiz.model.js');
+const Quiz = require('../models/quizModel.js');
 const checkLoggedIn = require('../middleware/check-logged-in');
 
 const data = require('../data');

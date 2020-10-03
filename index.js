@@ -6,6 +6,7 @@ const hbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const db = require('./db.js')
 
+
 const app = express();
 const PORT = 3000;
 const HOSTNAME = 'localhost';
@@ -147,7 +148,7 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@quez
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
-  
+
 app.listen(PORT, HOSTNAME, () => {
     console.log(`its working`);
 });
