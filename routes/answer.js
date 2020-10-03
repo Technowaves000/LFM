@@ -69,7 +69,7 @@ router.get('/answer/:quizId', checkLoggedIn, (req, res) => {
         if(err){
             console.log("error in getting quiz");
         } else{
-            console.log(id);
+            console.log("This is Quiz: " + quiz);
             return res.render('answer', {
                 title: quiz.Title,
                 genres: quiz.Genre,

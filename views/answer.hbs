@@ -9,7 +9,7 @@
 </div>
 
 <form action="/answer/{{quiz.id}}" method="POST" id="quiz-items">
-  {{#each quiz.questions}}
+  {{#each quiz.Questions}}
     {{> quiz-item item=this index=(inc @index) length=../quiz.questions.length type=../quiz.type}}
   {{/each}}
 </form>
