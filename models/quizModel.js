@@ -9,7 +9,7 @@ var quizSchema = new Schema({
     Genre: String,
     Type: String,
     Time: Number,
-    Taken: Number,
+    Taken: [{User: {type: mongoose.Schema.Types.ObjectId, ref: 'users'}, Score:Number, TimeTaken:Number}],
     Publish: Boolean
 })
 

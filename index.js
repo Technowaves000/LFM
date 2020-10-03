@@ -8,7 +8,7 @@ const db = require('./db.js')
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const HOSTNAME = 'localhost';
 
 require('dotenv').config();
