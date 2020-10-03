@@ -77,8 +77,7 @@ router.get('/answer/:quizId', checkLoggedIn, (req, res) => {
                 user: req.session.user,
                 quiz: quiz,
                 leaderboard: quiz.Leaderboard,
-                played: false,
-                user: req.session ? req.session.user : null
+                played: false
             });
         }
     });
