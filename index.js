@@ -143,6 +143,11 @@ app.use(profileRoutes);
 app.use(quizRoutes);
 app.use(siteRoutes);
 
+mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@quezy.odeny.mongodb.net/quezy?retryWrites=true&w=majority`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
+  
 app.listen(PORT, HOSTNAME, () => {
     console.log(`its working`);
 });
