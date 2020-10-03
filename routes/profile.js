@@ -4,6 +4,9 @@ const path = require('path');
 const express = require('express');
 const Router = express.Router;
 
+const userModel = require("../models/userModel")
+const quizModel = require("../models/quizModel")
+
 const router = Router();
 
 const data = require('../data');
@@ -12,23 +15,33 @@ const checkLoggedIn = require('../middleware/check-logged-in');
 const multer = require('multer');
 const upload = multer({ dest: path.join(__dirname, '/../uploads') });
 
-router.get('/profile/:user', (req, res) => {
-    var id = Number.parseInt(req.params.user);
-    data.getProfile(id)
-        .then(profile => {
-            return res.render('view-profile', {
-                title: `${profile.name}'s Profile - Queazy`,
-                profile: {
-                    id: profile.id,
-                    name: profile.name
-                },
-                user: req.session ? req.session.user : null
-            });
-        })
-        .catch(reason => {
-            return res.redirect('/404');
-        });
-});
+router.get('/profile', (req, res) => {
+    // var id = Number.parseInt(req.params.user);
+
+    return res.render('view-profile', {
+        title: `${req.session.user.Username}'s Profile - Queazy`,
+        profile: {
+            id: req.session.user._id,
+            name: req.session.user.Username
+        },
+        user: req.session.user
+    });
+})
+//     data.getProfile(id)
+//         .then(profile => {
+//             return res.render('view-profile', {
+//                 title: `${profile.Username}'s Profile - Queazy`,
+//                 profile: {
+//                     id: profile._id,
+//                     name: profile.Username
+//                 },
+//                 user: req.session.user
+//             });
+//         })
+//         .catch(reason => {
+//             return res.redirect('/404');
+//         });
+// });
 
 router.get('/profile', checkLoggedIn, (req, res) => {
     return res.redirect(`/profile/${req.session.user.id}`);
